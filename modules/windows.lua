@@ -167,10 +167,6 @@ hotkey.bind(hyperShift, "3", function()
     moveto(win, 3)
 end)
 
-hotkey.bind(hyperShift, "F", function()
-    hs.eventtap.leftClick(hs.mouse.absolutePosition())
-end)
-
 hs.hotkey.bind({"alt"}, "Tab", function()
     local app = hs.application.frontmostApplication() -- 	local windows = app:allWindows()
     local windows = app:allWindows()
@@ -309,4 +305,17 @@ end
 
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "J", function()
     windowFuzzySearch()
+end)
+
+function doubleLeftClick(point)
+    local clickState = hs.eventtap.event.properties.mouseEventClickState
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 1):post()
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 1):post()
+    hs.timer.usleep(1000)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 2):post()
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 2):post()
+end
+
+hotkey.bind(hyperShift, "F", function()
+    doubleLeftClick(hs.mouse.absolutePosition())
 end)
