@@ -16,60 +16,62 @@ window.animationDuration = 0
 
 -- left half
 hotkey.bind(hyper, "Left", function()
-  if window.focusedWindow() then
-    window.focusedWindow():moveToUnit(layout.left50)
-  else
-    alert.show("No active window")
-  end
+    if window.focusedWindow() then
+        window.focusedWindow():moveToUnit(layout.left50)
+    else
+        alert.show("No active window")
+    end
 end)
 
 -- right half
 hotkey.bind(hyper, "Right", function()
-  window.focusedWindow():moveToUnit(layout.right50)
+    window.focusedWindow():moveToUnit(layout.right50)
 end)
 
 -- top half
 hotkey.bind(hyper, "Up", function()
-  window.focusedWindow():moveToUnit'[0,0,100,50]'
+    window.focusedWindow():moveToUnit '[0,0,100,50]'
 end)
 
 -- bottom half
 hotkey.bind(hyper, "Down", function()
-  window.focusedWindow():moveToUnit'[0,50,100,100]'
+    window.focusedWindow():moveToUnit '[0,50,100,100]'
 end)
 
 -- left top quarter
 hotkey.bind(hyperAlt, "Left", function()
-  window.focusedWindow():moveToUnit'[0,0,50,50]'
+    window.focusedWindow():moveToUnit '[0,0,50,50]'
 end)
 
 -- right bottom quarter
 hotkey.bind(hyperAlt, "Right", function()
-  window.focusedWindow():moveToUnit'[50,50,100,100]'
+    window.focusedWindow():moveToUnit '[50,50,100,100]'
 end)
 
 -- right top quarter
 hotkey.bind(hyperAlt, "Up", function()
-  window.focusedWindow():moveToUnit'[50,0,100,50]'
+    window.focusedWindow():moveToUnit '[50,0,100,50]'
 end)
 
 -- left bottom quarter
 hotkey.bind(hyperAlt, "Down", function()
-  window.focusedWindow():moveToUnit'[0,50,50,100]'
+    window.focusedWindow():moveToUnit '[0,50,50,100]'
 end)
 
 -- full screen
-hotkey.bind(hyper, 'F', function() 
-  window.focusedWindow():toggleFullScreen()
+hotkey.bind(hyper, 'F', function()
+    window.focusedWindow():toggleFullScreen()
 end)
 
 -- center window
-hotkey.bind(hyper, 'C', function() 
-  window.focusedWindow():centerOnScreen()
+hotkey.bind(hyper, 'C', function()
+    window.focusedWindow():centerOnScreen()
 end)
 
 -- maximize window
-hotkey.bind(hyper, 'M', function() toggle_maximize() end)
+hotkey.bind(hyper, 'M', function()
+    toggle_maximize()
+end)
 
 -- defines for window maximize toggler
 local frameCache = {}
@@ -94,76 +96,217 @@ end)
 
 -- switch active window
 hotkey.bind(hyperShift, "H", function()
-  window.switcher.nextWindow()
+    window.switcher.nextWindow()
 end)
 
 -- move active window to previous monitor
 hotkey.bind(hyperShift, "Left", function()
-  window.focusedWindow():moveOneScreenWest()
+    window.focusedWindow():moveOneScreenWest()
 end)
 
 -- move active window to next monitor
 hotkey.bind(hyperShift, "Right", function()
-  window.focusedWindow():moveOneScreenEast()
+    window.focusedWindow():moveOneScreenEast()
 end)
 
 -- move cursor to previous monitor
-hotkey.bind(hyperCtrl, "Left", function ()
-  focusScreen(window.focusedWindow():screen():previous())
+hotkey.bind(hyperCtrl, "Left", function()
+    focusScreen(window.focusedWindow():screen():previous())
 end)
 
 -- move cursor to next monitor
-hotkey.bind(hyperCtrl, "Right", function ()
-  focusScreen(window.focusedWindow():screen():next())
+hotkey.bind(hyperCtrl, "Right", function()
+    focusScreen(window.focusedWindow():screen():next())
 end)
 
-
---Predicate that checks if a window belongs to a screen
+-- Predicate that checks if a window belongs to a screen
 function isInScreen(screen, win)
-  return win:screen() == screen
+    return win:screen() == screen
 end
 
 function focusScreen(screen)
-  --Get windows within screen, ordered from front to back.
-  --If no windows exist, bring focus to desktop. Otherwise, set focus on
-  --front-most application window.
-  local windows = fnutils.filter(
-      window.orderedWindows(),
-      fnutils.partial(isInScreen, screen))
-  local windowToFocus = #windows > 0 and windows[1] or window.desktop()
-  windowToFocus:focus()
+    -- Get windows within screen, ordered from front to back.
+    -- If no windows exist, bring focus to desktop. Otherwise, set focus on
+    -- front-most application window.
+    local windows = fnutils.filter(window.orderedWindows(), fnutils.partial(isInScreen, screen))
+    local windowToFocus = #windows > 0 and windows[1] or window.desktop()
+    windowToFocus:focus()
 
-  -- move cursor to center of screen
-  local pt = geometry.rectMidPoint(screen:fullFrame())
-  mouse.setAbsolutePosition(pt)
+    -- move cursor to center of screen
+    local pt = geometry.rectMidPoint(screen:fullFrame())
+    mouse.setAbsolutePosition(pt)
 end
 
 -- maximized active window and move to selected monitor
 moveto = function(win, n)
-  local screens = screen.allScreens()
-  if n > #screens then
-    alert.show("Only " .. #screens .. " monitors ")
-  else
-    local toWin = screen.allScreens()[n]:name()
-    alert.show("Move " .. win:application():name() .. " to " .. toWin)
+    local screens = screen.allScreens()
+    if n > #screens then
+        alert.show("Only " .. #screens .. " monitors ")
+    else
+        local toWin = screen.allScreens()[n]:name()
+        alert.show("Move " .. win:application():name() .. " to " .. toWin)
 
-    layout.apply({{nil, win:title(), toWin, layout.maximized, nil, nil}})
-    
-  end
+        layout.apply({{nil, win:title(), toWin, layout.maximized, nil, nil}})
+
+    end
 end
 
 -- move cursor to monitor 1 and maximize the window
 hotkey.bind(hyperShift, "1", function()
-  local win = window.focusedWindow()
-  moveto(win, 1)
+    local win = window.focusedWindow()
+    moveto(win, 1)
 end)
 
 hotkey.bind(hyperShift, "2", function()
-  local win = window.focusedWindow()
-  moveto(win, 2)
+    local win = window.focusedWindow()
+    moveto(win, 2)
 end)
 
 hotkey.bind(hyperShift, "3", function()
-  local win = window.focusedWindow()
-  moveto(win, 3)
+    local win = window.focusedWindow()
+    moveto(win, 3)
+end)
+
+hotkey.bind(hyperShift, "F", function()
+    hs.eventtap.leftClick(hs.mouse.absolutePosition())
+end)
+
+hs.hotkey.bind({"alt"}, "Tab", function()
+    local app = hs.application.frontmostApplication() -- 	local windows = app:allWindows()
+    local windows = app:allWindows()
+
+    local nextWin = nil
+
+    -- Finder somehow has one more invisible window, so don't take it into account
+    -- (only tested on Yosemite 10.10.1)
+    if app:bundleID() == "com.apple.finder" then
+        nextWin = windows[#windows - 1]
+    else
+        nextWin = windows[#windows]
+    end
+
+    if nextWin:isMinimized() == true then
+        nextWin:unminimize()
+    else
+        nextWin:focus()
+    end
+end)
+
+hs.hotkey.bind(hyperShift, "Tab", function()
+    local app = hs.application.frontmostApplication()
+    local windows = app:allWindows()
+
+    local previousWin = nil
+
+    -- Finder somehow has one more invisible window, so don't take it into account
+    -- (only tested on Yosemite 10.10.1)
+    if app:bundleID() == "com.apple.finder" then
+        previousWin = windows[#windows - 1]
+    else
+        previousWin = windows[#windows - 1]
+    end
+
+    if previousWin:isMinimized() == true then
+        previousWin:unminimize()
+    else
+        previousWin:focus()
+    end
+end)
+
+_fuzzyChoices = nil
+_fuzzyChooser = nil
+_fuzzyLastWindow = nil
+
+function fuzzyQuery(s, m)
+    s_index = 1
+    m_index = 1
+    match_start = nil
+    while true do
+        if s_index > s:len() or m_index > m:len() then
+            return -1
+        end
+        s_char = s:sub(s_index, s_index)
+        m_char = m:sub(m_index, m_index)
+        if s_char == m_char then
+            if match_start == nil then
+                match_start = s_index
+            end
+            s_index = s_index + 1
+            m_index = m_index + 1
+            if m_index > m:len() then
+                match_end = s_index
+                s_match_length = match_end - match_start
+                score = m:len() / s_match_length
+                return score
+            end
+        else
+            s_index = s_index + 1
+        end
+    end
+end
+
+function _fuzzyFilterChoices(query)
+    if query:len() == 0 then
+        _fuzzyChooser:choices(_fuzzyChoices)
+        return
+    end
+    pickedChoices = {}
+    for i, j in pairs(_fuzzyChoices) do
+        fullText = (j["text"] .. " " .. j["subText"]):lower()
+        score = fuzzyQuery(fullText, query:lower())
+        if score > 0 then
+            j["fzf_score"] = score
+            table.insert(pickedChoices, j)
+        end
+    end
+    local sort_func = function(a, b)
+        return a["fzf_score"] > b["fzf_score"]
+    end
+    table.sort(pickedChoices, sort_func)
+    _fuzzyChooser:choices(pickedChoices)
+end
+
+function _fuzzyPickWindow(item)
+    if item == nil then
+        if _fuzzyLastWindow then
+            -- Workaround so last focused window stays focused after dismissing
+            _fuzzyLastWindow:focus()
+            _fuzzyLastWindow = nil
+        end
+        return
+    end
+    saveTime(6)
+    id = item["windowID"]
+    window = hs.window.get(id)
+    window:focus()
+end
+
+function windowFuzzySearch()
+    windows = hs.window.filter.default:getWindows(hs.window.filter.sortByFocusedLast)
+    -- windows = hs.window.orderedWindows()
+    _fuzzyChoices = {}
+    for i, w in pairs(windows) do
+        title = w:title()
+        app = w:application():name()
+        item = {
+            ["text"] = app,
+            ["subText"] = title,
+            -- ["image"] = w:snapshot(),
+            ["windowID"] = w:id()
+        }
+        -- Handle special cases as necessary
+        -- if app == "Safari" and title == "" then
+        -- skip, it's a weird empty window that shows up sometimes for some reason
+        -- else
+        table.insert(_fuzzyChoices, item)
+        -- end
+    end
+    _fuzzyLastWindow = hs.window.focusedWindow()
+    _fuzzyChooser = hs.chooser.new(_fuzzyPickWindow):choices(_fuzzyChoices):searchSubText(true)
+    _fuzzyChooser:queryChangedCallback(_fuzzyFilterChoices) -- Enable true fuzzy find
+    _fuzzyChooser:show()
+end
+
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "J", function()
+    windowFuzzySearch()
 end)

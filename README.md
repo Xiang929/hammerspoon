@@ -3,7 +3,7 @@
 ## Usage
 
 1. Install [Hammerspoon](http://www.hammerspoon.org/)
-2. `git clone https://github.com/greyby/hammerspoon.git ~/.hammerspoon`
+2. `git clone https://github.com/Xiang929/hammerspoon.git ~/.hammerspoon`
 
 ## Modifier keys
 |           |  Key           |
