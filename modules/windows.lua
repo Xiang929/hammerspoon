@@ -13,6 +13,18 @@ local mouse = require "hs.mouse"
 
 -- default 0.2
 window.animationDuration = 0
+switcher = hs.window.switcher.new(
+   hs.window.filter.new()
+      :setCurrentSpace(true):setDefaultFilter{}, -- make emacs window show in switcher list
+   {
+      showTitles = false,		-- don't show window title
+      thumbnailSize = 200,		-- window thumbnail size
+      showSelectedThumbnail = false,	-- don't show bigger thumbnail
+      backgroundColor = {0, 0, 0, 0.8}, -- background color
+      highlightColor = {0.3, 0.3, 0.3, 0.8}, -- selected color
+   }
+)
+
 
 -- left half
 hotkey.bind(hyper, "Left", function()
@@ -92,11 +104,6 @@ hotkey.bind(hyperShift, '/', function()
     hints.windowHints()
     -- Display current application window
     -- hints.windowHints(hs.window.focusedWindow():application():allWindows())
-end)
-
--- switch active window
-hotkey.bind(hyperShift, "H", function()
-    window.switcher.nextWindow()
 end)
 
 -- move active window to previous monitor
