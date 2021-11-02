@@ -99,13 +99,6 @@ function toggle_maximize()
     end
 end
 
--- display a keyboard hint for switching focus to each window
-hotkey.bind(hyperShift, '/', function()
-    hints.windowHints()
-    -- Display current application window
-    -- hints.windowHints(hs.window.focusedWindow():application():allWindows())
-end)
-
 -- move active window to previous monitor
 hotkey.bind(hyperShift, "Left", function()
     window.focusedWindow():moveOneScreenWest()
