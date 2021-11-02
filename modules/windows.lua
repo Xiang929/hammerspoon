@@ -174,7 +174,7 @@ hotkey.bind(hyperShift, "3", function()
     moveto(win, 3)
 end)
 
-hs.hotkey.bind({"alt"}, "Tab", function()
+hs.hotkey.bind(hyperShift, "K", function()
     local app = hs.application.frontmostApplication() -- 	local windows = app:allWindows()
     local windows = app:allWindows()
 
@@ -195,7 +195,7 @@ hs.hotkey.bind({"alt"}, "Tab", function()
     end
 end)
 
-hs.hotkey.bind(hyperShift, "Tab", function()
+hs.hotkey.bind(hyperShift, "J", function()
     local app = hs.application.frontmostApplication()
     local windows = app:allWindows()
 
@@ -310,6 +310,7 @@ function windowFuzzySearch()
     _fuzzyChooser:show()
 end
 
+-- fuzzy search
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "J", function()
     windowFuzzySearch()
 end)
@@ -323,6 +324,12 @@ function doubleLeftClick(point)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 2):post()
 end
 
+-- double click
 hotkey.bind(hyperShift, "F", function()
     doubleLeftClick(hs.mouse.absolutePosition())
+end)
+
+-- kill window
+hotkey.bind(hyperCtrl, "K", function()
+    window.focusedWindow():application():kill()
 end)
