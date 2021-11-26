@@ -325,3 +325,33 @@ end)
 hotkey.bind(hyperCtrl, "K", function()
     window.focusedWindow():application():kill()
 end)
+
+function brightness0()
+    screens = hs.screen.allScreens()
+    for i,s in pairs(screens) do
+        print(s:name())
+        s:setBrightness(0)
+    end
+end
+
+function brightness60()
+    screens = hs.screen.allScreens()
+    for i,s in pairs(screens) do
+        s:setBrightness(0.6)
+    end
+end
+
+function brightnesstest()
+end
+
+hotkey.bind(hyper, ";", function()
+    brightness0()
+end)
+
+hotkey.bind(hyper, "'", function()
+    brightness60()
+end)
+
+hotkey.bind(hyper, "0", function()
+    brightnesstest()
+end)

@@ -7,6 +7,10 @@ hotkey.bind(hyper, "L", function()
     -- caffeinate.startScreensaver()
 end)
 
+hotkey.bind(hyper, "S", function()
+    caffeinate.systemSleep()
+end)
+
 -- mute on sleep
 function muteOnWake(eventType)
     if (eventType == caffeinate.watcher.systemDidWake) then
