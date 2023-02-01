@@ -27,7 +27,7 @@ switcher = hs.window.switcher.new(
 
 
 -- left half
-hotkey.bind(hyper, "Left", function()
+hotkey.bind(hyper, "H", function()
     if window.focusedWindow() then
         window.focusedWindow():moveToUnit(layout.left50)
     else
@@ -36,37 +36,47 @@ hotkey.bind(hyper, "Left", function()
 end)
 
 -- right half
-hotkey.bind(hyper, "Right", function()
+hotkey.bind(hyper, "L", function()
     window.focusedWindow():moveToUnit(layout.right50)
 end)
 
 -- top half
-hotkey.bind(hyper, "Up", function()
+hotkey.bind(hyper, "K", function()
     window.focusedWindow():moveToUnit '[0,0,100,50]'
 end)
 
 -- bottom half
-hotkey.bind(hyper, "Down", function()
+hotkey.bind(hyper, "J", function()
     window.focusedWindow():moveToUnit '[0,50,100,100]'
 end)
 
 -- left top quarter
-hotkey.bind(hyperAlt, "Left", function()
-    window.focusedWindow():moveToUnit '[0,0,50,50]'
+hotkey.bind(hyperAlt, "H", function()
+    local win = window.focusedWindow()
+	local axApp = hs.axuielement.applicationElement(win:application())
+	local wasEnhanced = axApp.AXEnhancedUserInterface
+	if wasEnhanced then
+	    axApp.AXEnhancedUserInterface = false
+	end
+    win:moveToUnit '[0,0,50,50]'
+	if wasEnhanced then
+	    axApp.AXEnhancedUserInterface = true
+	end
 end)
 
 -- right bottom quarter
-hotkey.bind(hyperAlt, "Right", function()
+hotkey.bind(hyperAlt, "L", function()
+
     window.focusedWindow():moveToUnit '[50,50,100,100]'
 end)
 
 -- right top quarter
-hotkey.bind(hyperAlt, "Up", function()
+hotkey.bind(hyperAlt, "K", function()
     window.focusedWindow():moveToUnit '[50,0,100,50]'
 end)
 
 -- left bottom quarter
-hotkey.bind(hyperAlt, "Down", function()
+hotkey.bind(hyperAlt, "J", function()
     window.focusedWindow():moveToUnit '[0,50,50,100]'
 end)
 
@@ -95,33 +105,41 @@ function toggle_maximize()
         frameCache[win:id()] = nil
     else
         frameCache[win:id()] = win:frame()
-        win:maximize()
+		local axApp = hs.axuielement.applicationElement(win:application())
+		local wasEnhanced = axApp.AXEnhancedUserInterface
+		if wasEnhanced then
+		    axApp.AXEnhancedUserInterface = false
+		end
+		win:setFrame(win:screen():fullFrame()) -- or win:moveToScreen(someScreen), etc.
+		if wasEnhanced then
+		    axApp.AXEnhancedUserInterface = true
+		end
     end
 end
 
 -- move active window to previous monitor
-hotkey.bind(hyperShift, "Left", function()
+hotkey.bind(hyperShift, "H", function()
     window.focusedWindow():moveOneScreenWest()
 end)
 
 -- move active window to next monitor
-hotkey.bind(hyperShift, "Right", function()
+hotkey.bind(hyperShift, "L", function()
     window.focusedWindow():moveOneScreenEast()
 end)
 
 -- move cursor to previous monitor
-hotkey.bind(hyperCtrl, "Left", function()
+hotkey.bind(hyperCtrl, "H", function()
     focusScreen(window.focusedWindow():screen():previous())
 end)
 
 -- move cursor to next monitor
-hotkey.bind(hyperCtrl, "Right", function()
+hotkey.bind(hyperCtrl, "L", function()
     focusScreen(window.focusedWindow():screen():next())
 end)
 
 -- Predicate that checks if a window belongs to a screen
 function isInScreen(screen, win)
-    return win:screen() == screen
+    return win:screen() == screen and win:title() ~= "Window"
 end
 
 function focusScreen(screen)
@@ -135,6 +153,7 @@ function focusScreen(screen)
     -- move cursor to center of screen
     local pt = geometry.rectMidPoint(screen:fullFrame())
     mouse.setAbsolutePosition(pt)
+
 end
 
 -- maximized active window and move to selected monitor
@@ -353,5 +372,11 @@ hotkey.bind(hyper, "'", function()
 end)
 
 hotkey.bind(hyper, "0", function()
-    brightnesstest()
+    local windows = fnutils.filter(window.orderedWindows(), fnutils.partial(isInScreen, window.focusedWindow():screen()))
+    for i, w in pairs(windows) do
+        print(windows[i]:title())
+        print(windows[i]:id())
+        print(windows[i]:size())
+        print(windows[i]:role())
+    end
 end)
