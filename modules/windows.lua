@@ -388,12 +388,10 @@ hotkey.bind(hyper, "1", function()
 end)
 
 local function Chinese()
-  -- hs.keycodes.setMethod("Pinyin - Simplified")
   hs.keycodes.currentSourceID("com.sogou.inputmethod.sogou.pinyin")
 end
 
 local function English()
-  -- hs.keycodes.setLayout("U.S.")
   hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
 end
 
@@ -422,7 +420,6 @@ local function listener(event)
   		hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
         return
     end
-
 end  
 
 tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, listener)  
