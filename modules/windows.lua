@@ -120,11 +120,14 @@ end
 -- move active window to previous monitor
 hotkey.bind(hyperShift, "H", function()
     window.focusedWindow():moveOneScreenWest()
+    os.execute("sleep " .. tonumber(1))
+    toggle_maximize()
 end)
 
 -- move active window to next monitor
 hotkey.bind(hyperShift, "L", function()
-    window.focusedWindow():moveOneScreenEast()
+    window.focusedWindow():moveOneScreenEast({noResize=true})
+    os.execute("sleep " .. tonumber(1))
 end)
 
 -- move cursor to previous monitor
@@ -372,11 +375,55 @@ hotkey.bind(hyper, "'", function()
 end)
 
 hotkey.bind(hyper, "0", function()
+	local frontmostApplication = hs.application.frontmostApplication()
+	print(frontmostApplication:name())
+	print(frontmostApplication:bundleID())
+end)
+
+hotkey.bind(hyper, "1", function()
     local windows = fnutils.filter(window.orderedWindows(), fnutils.partial(isInScreen, window.focusedWindow():screen()))
     for i, w in pairs(windows) do
-        print(windows[i]:title())
-        print(windows[i]:id())
-        print(windows[i]:size())
-        print(windows[i]:role())
+        print(w:application():name())
     end
 end)
+
+local function Chinese()
+  -- hs.keycodes.setMethod("Pinyin - Simplified")
+  hs.keycodes.currentSourceID("com.sogou.inputmethod.sogou.pinyin")
+end
+
+local function English()
+  -- hs.keycodes.setLayout("U.S.")
+  hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
+end
+
+local function set_app_input_method(app_name, set_input_method_function, event)
+  event = event or hs.window.filter.windowFocused
+
+  hs.window.filter.new(app_name)
+    :subscribe(event, function()
+                 set_input_method_function()
+              end)
+end
+
+set_app_input_method('Hammerspoon', English, hs.window.filter.windowCreated)
+set_app_input_method('iTerm2', English)
+set_app_input_method('Google Chrome', English)
+
+set_app_input_method('微信', Chinese)
+set_app_input_method('Alfred', English)
+
+local function listener(event)  
+    -- Get the keyboard modifiers of an event
+    local flags = event:getFlags()
+    -- Get the keycode name of the event
+    local keyName = hs.keycodes.map[event:getKeyCode()]
+    if flags:containExactly({"alt"}) and keyName == "space"  then
+  		hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
+        return
+    end
+
+end  
+
+tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, listener)  
+tapper:start()
