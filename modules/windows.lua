@@ -410,6 +410,8 @@ set_app_input_method('Google Chrome', English)
 
 set_app_input_method('微信', Chinese)
 set_app_input_method('Alfred', English)
+set_app_input_method('Code', English)
+set_app_input_method('IntelliJ IDEA', English)
 
 local function listener(event)  
     -- Get the keyboard modifiers of an event
