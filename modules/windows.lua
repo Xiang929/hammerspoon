@@ -132,12 +132,12 @@ end)
 
 -- move cursor to previous monitor
 hotkey.bind(hyperCtrl, "H", function()
-    focusScreen(window.focusedWindow():screen():previous())
+    focusScreen(hs.mouse.getCurrentScreen():previous())
 end)
 
 -- move cursor to next monitor
 hotkey.bind(hyperCtrl, "L", function()
-    focusScreen(window.focusedWindow():screen():next())
+    focusScreen(hs.mouse.getCurrentScreen():next())
 end)
 
 -- Predicate that checks if a window belongs to a screen
