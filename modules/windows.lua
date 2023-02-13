@@ -149,13 +149,15 @@ function focusScreen(screen)
     -- Get windows within screen, ordered from front to back.
     -- If no windows exist, bring focus to desktop. Otherwise, set focus on
     -- front-most application window.
-    local windows = fnutils.filter(window.orderedWindows(), fnutils.partial(isInScreen, screen))
-    local windowToFocus = #windows > 0 and windows[1] or window.desktop()
-    windowToFocus:focus()
 
     -- move cursor to center of screen
     local pt = geometry.rectMidPoint(screen:fullFrame())
     mouse.setAbsolutePosition(pt)
+
+    local windows = fnutils.filter(window.orderedWindows(), fnutils.partial(isInScreen, screen))
+    local windowToFocus = #windows > 0 and windows[1] or window.desktop()
+    windowToFocus:focus()
+
 
 end
 
