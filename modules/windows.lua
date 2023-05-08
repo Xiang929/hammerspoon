@@ -390,7 +390,7 @@ hotkey.bind(hyper, "1", function()
 end)
 
 local function Chinese()
-  hs.keycodes.currentSourceID("com.sogou.inputmethod.sogou.pinyin")
+  hs.keycodes.currentSourceID("com.tencent.inputmethod.wetype.pinyin")
 end
 
 local function English()
