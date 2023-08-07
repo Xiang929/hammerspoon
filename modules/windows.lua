@@ -128,6 +128,7 @@ end)
 hotkey.bind(hyperShift, "L", function()
     window.focusedWindow():moveOneScreenEast({noResize=true})
     os.execute("sleep " .. tonumber(1))
+    toggle_maximize()
 end)
 
 -- move cursor to previous monitor
@@ -416,7 +417,7 @@ set_app_input_method('Code', English)
 set_app_input_method('IntelliJ IDEA', English)
 set_app_input_method('Microsoft Edge', English)
 
-local function listener(event)  
+local function listener(event)
     -- Get the keyboard modifiers of an event
     local flags = event:getFlags()
     -- Get the keycode name of the event
@@ -425,7 +426,7 @@ local function listener(event)
   		hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
         return
     end
-end  
+end
 
-tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, listener)  
+tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, listener)
 tapper:start()
