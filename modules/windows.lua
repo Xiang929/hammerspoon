@@ -416,6 +416,8 @@ set_app_input_method('Alfred', English)
 set_app_input_method('Code', English)
 set_app_input_method('IntelliJ IDEA', English)
 set_app_input_method('Microsoft Edge', English)
+set_app_input_method('GoLand', English)
+set_app_input_method('DataGrip', English)
 
 local function listener(event)
     -- Get the keyboard modifiers of an event
